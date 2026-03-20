@@ -1,0 +1,39 @@
+@import "tailwindcss";
+@import '@fontsource/playfair-display/400.css';
+@import '@fontsource/playfair-display/400-italic.css';
+@import '@fontsource/playfair-display/700.css';
+@import '@fontsource/playfair-display/700-italic.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+@theme {
+  --font-serif: 'Playfair Display', serif;
+  --font-sans: 'Inter', sans-serif;
+  --color-orange-brand: #E8642C;
+  --color-orange-brand-dark: #D4551F;
+  --color-dark: #1A1A1A;
+  --color-gray-light: #F5F5F0;
+  --color-gray-medium: #8A8A8A;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-dark);
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: var(--color-orange-brand);
+  color: white;
+}
+
+#root {
+  min-height: 100vh;
+}
