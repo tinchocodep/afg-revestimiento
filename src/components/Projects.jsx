@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { Instagram } from 'lucide-react'
 
 const categories = ['Todos', 'Comerciales', 'Residenciales', 'Exteriores']
 
@@ -187,6 +188,26 @@ export default function Projects() {
               </motion.div>
             ))}
           </AnimatePresence>
+        </motion.div>
+
+        {/* Instagram CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 text-center"
+        >
+          <a
+            href="https://www.instagram.com/revestimientosafg"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white font-semibold px-8 py-4 rounded-full hover:scale-105 transition-transform"
+          >
+            <Instagram className="w-6 h-6" />
+            Seguinos en Instagram para ver más proyectos
+          </a>
+          <p className="text-gray-medium text-sm mt-3">@revestimientosafg</p>
         </motion.div>
       </div>
     </section>
