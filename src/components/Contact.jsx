@@ -14,9 +14,9 @@ export default function Contact() {
   }
 
   return (
-    <section id="contacto" className="py-24 lg:py-32 bg-gray-light">
+    <section id="contacto" className="py-16 sm:py-24 lg:py-32 bg-gray-light">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16">
           {/* Left: form */}
           <motion.div
             ref={titleRef}
@@ -27,10 +27,10 @@ export default function Contact() {
             <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
               Contactanos
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mt-3 mb-5 italic">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-4 sm:mb-5 italic">
               Iniciemos tu Proyecto
             </h2>
-            <p className="text-gray-medium text-lg mb-10">
+            <p className="text-gray-medium text-base sm:text-lg mb-8 sm:mb-10">
               Completá el formulario y nos pondremos en contacto dentro de las próximas 24 horas.
             </p>
 
@@ -91,7 +91,7 @@ export default function Contact() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="flex flex-col gap-8"
           >
-            <div className="bg-orange-brand rounded-3xl p-8 text-white">
+            <div className="bg-orange-brand rounded-3xl p-6 sm:p-8 text-white">
               <h3 className="font-serif text-2xl font-bold mb-6">AFG Revestimientos</h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-4">
@@ -118,7 +118,7 @@ export default function Contact() {
               </div>
             </div>
 
-            <div className="rounded-3xl overflow-hidden flex-1 min-h-[300px]">
+            <div className="rounded-3xl overflow-hidden flex-1 min-h-[200px] sm:min-h-[300px]">
               <img
                 src="/IMG_9309.JPG"
                 alt="AFG Revestimientos oficina"

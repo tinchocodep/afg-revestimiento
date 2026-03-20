@@ -20,9 +20,9 @@ export default function About() {
   const imageY = useTransform(scrollYProgress, [0, 1], [60, -60])
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-white overflow-hidden">
+    <section ref={sectionRef} className="py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
           {/* Image with parallax */}
           <motion.div style={{ y: imageY }} className="relative">
             <div className="rounded-3xl overflow-hidden aspect-[4/5]">
@@ -48,18 +48,18 @@ export default function About() {
             <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
               Sobre nosotros
             </span>
-            <h2 className="font-serif text-4xl md:text-5xl font-bold mt-3 mb-6 italic">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-5 sm:mb-6 italic">
               ADN AFG Revestimientos
             </h2>
-            <p className="text-gray-medium text-lg leading-relaxed mb-6">
+            <p className="text-gray-medium text-base sm:text-lg leading-relaxed mb-5 sm:mb-6">
               Con más de 15 años de trayectoria en el mercado argentino, nos especializamos en revestimientos continuos de alta gama. Cada proyecto es una oportunidad para crear superficies que combinan belleza, durabilidad y funcionalidad.
             </p>
-            <p className="text-gray-medium leading-relaxed mb-10">
+            <p className="text-gray-medium leading-relaxed mb-8 sm:mb-10">
               Nuestra filosofía se basa en la combinación de técnicas artesanales con materiales de última generación, logrando acabados únicos que superan las expectativas de nuestros clientes. Trabajamos con arquitectos, diseñadores y propietarios para materializar su visión.
             </p>
 
             {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6">
               {stats.map((stat, i) => (
                 <motion.div
                   key={stat.label}

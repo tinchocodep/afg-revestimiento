@@ -35,25 +35,25 @@ export default function Testimonials() {
   const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length)
 
   return (
-    <section className="py-24 lg:py-32 bg-dark text-white">
+    <section className="py-16 sm:py-24 lg:py-32 bg-dark text-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           ref={titleRef}
           initial={{ opacity: 0, y: 30 }}
           animate={titleInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
           <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
             Testimonios
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mt-3 italic">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 italic">
             Lo que Dicen Nuestros Clientes
           </h2>
         </motion.div>
 
         <div className="max-w-3xl mx-auto relative">
-          <Quote className="w-16 h-16 text-orange-brand/20 absolute -top-4 -left-4" />
+          <Quote className="w-10 h-10 sm:w-16 sm:h-16 text-orange-brand/20 absolute -top-2 -left-2 sm:-top-4 sm:-left-4" />
 
           <motion.div
             key={current}
@@ -69,7 +69,7 @@ export default function Testimonials() {
               ))}
             </div>
 
-            <p className="text-xl md:text-2xl leading-relaxed text-white/90 mb-8 font-light italic">
+            <p className="text-base sm:text-xl md:text-2xl leading-relaxed text-white/90 mb-6 sm:mb-8 font-light italic">
               &ldquo;{testimonials[current].text}&rdquo;
             </p>
 

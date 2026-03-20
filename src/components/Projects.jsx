@@ -123,30 +123,30 @@ export default function Projects() {
       : projects.filter((p) => p.category === activeFilter)
 
   return (
-    <section id="proyectos" className="py-24 lg:py-32 bg-white">
+    <section id="proyectos" className="py-16 sm:py-24 lg:py-32 bg-white">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           ref={titleRef}
           initial={{ opacity: 0, y: 30 }}
           animate={titleInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8 sm:mb-12"
         >
           <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
             Portfolio
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mt-3 mb-5">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-5">
             Proyectos Destacados
           </h2>
         </motion.div>
 
         {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
           {categories.map((cat) => (
             <button
               key={cat}
               onClick={() => setActiveFilter(cat)}
-              className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+              className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all ${
                 activeFilter === cat
                   ? 'bg-orange-brand text-white'
                   : 'bg-gray-light text-dark hover:bg-gray-200'
@@ -158,7 +158,7 @@ export default function Projects() {
         </div>
 
         {/* Grid */}
-        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div layout className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           <AnimatePresence mode="popLayout">
             {filtered.map((project) => (
               <motion.div
@@ -175,15 +175,15 @@ export default function Projects() {
                   alt={project.title}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-6 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
-                  <span className="text-orange-brand text-xs font-semibold uppercase tracking-wider">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
+                  <span className="text-orange-brand text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
                     {project.category}
                   </span>
-                  <h3 className="text-white font-serif text-xl font-bold mt-1">
+                  <h3 className="text-white font-serif text-sm sm:text-xl font-bold mt-0.5 sm:mt-1">
                     {project.title}
                   </h3>
-                  <p className="text-white/70 text-sm mt-1">{project.description}</p>
+                  <p className="text-white/70 text-xs sm:text-sm mt-0.5 sm:mt-1 hidden sm:block">{project.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -196,13 +196,13 @@ export default function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6 }}
-          className="mt-16 text-center"
+          className="mt-10 sm:mt-16 text-center"
         >
           <a
             href="https://www.instagram.com/revestimientosafg"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white font-semibold px-8 py-4 rounded-full hover:scale-105 transition-transform"
+            className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white font-semibold px-5 py-3 sm:px-8 sm:py-4 rounded-full hover:scale-105 transition-transform text-sm sm:text-base"
           >
             <Instagram className="w-6 h-6" />
             Seguinos en Instagram para ver más proyectos

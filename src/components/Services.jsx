@@ -46,7 +46,7 @@ function ServiceCard({ service, index }) {
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="group p-8 bg-white rounded-2xl border border-gray-100 hover:shadow-xl hover:border-orange-brand/20 transition-all duration-300 hover:-translate-y-1"
+      className="group p-5 sm:p-8 bg-white rounded-2xl border border-gray-100 hover:shadow-xl hover:border-orange-brand/20 transition-all duration-300 hover:-translate-y-1"
     >
       <div className="w-14 h-14 bg-orange-brand/10 rounded-xl flex items-center justify-center mb-5 group-hover:bg-orange-brand group-hover:text-white transition-all duration-300">
         <service.icon className="w-7 h-7 text-orange-brand group-hover:text-white transition-colors" />
@@ -62,27 +62,27 @@ export default function Services() {
   const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
 
   return (
-    <section id="servicios" className="py-24 lg:py-32 bg-gray-light">
+    <section id="servicios" className="py-16 sm:py-24 lg:py-32 bg-gray-light">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           ref={titleRef}
           initial={{ opacity: 0, y: 30 }}
           animate={titleInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-16"
         >
           <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
             Lo que hacemos
           </span>
-          <h2 className="font-serif text-4xl md:text-5xl font-bold mt-3 mb-5">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-4 sm:mb-5">
             Nuestros Servicios
           </h2>
-          <p className="text-gray-medium max-w-2xl mx-auto text-lg">
+          <p className="text-gray-medium max-w-2xl mx-auto text-base sm:text-lg">
             Especializados en revestimientos continuos y soluciones de alta gama para transformar cualquier superficie.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {services.map((service, i) => (
             <ServiceCard key={service.title} service={service} index={i} />
           ))}
@@ -94,16 +94,16 @@ export default function Services() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6 }}
-          className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12"
+          className="mt-10 sm:mt-16 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-12"
         >
-          <div className="flex items-center gap-4 bg-white rounded-2xl px-8 py-5 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 sm:px-8 sm:py-5 shadow-sm border border-gray-100">
             <div className="w-3 h-3 bg-orange-brand rounded-full" />
             <div>
               <div className="text-xs text-gray-medium uppercase tracking-wider">Licenciatario Oficial</div>
               <div className="font-serif text-xl font-bold">Edfan</div>
             </div>
           </div>
-          <div className="flex items-center gap-4 bg-white rounded-2xl px-8 py-5 shadow-sm border border-gray-100">
+          <div className="flex items-center gap-4 bg-white rounded-2xl px-6 py-4 sm:px-8 sm:py-5 shadow-sm border border-gray-100">
             <div className="w-3 h-3 bg-orange-brand rounded-full" />
             <div>
               <div className="text-xs text-gray-medium uppercase tracking-wider">Licenciatario Oficial</div>

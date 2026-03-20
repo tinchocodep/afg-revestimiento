@@ -2,11 +2,11 @@ import { Instagram, Facebook, Linkedin } from 'lucide-react'
 
 export default function Footer() {
   return (
-    <footer className="bg-dark text-white py-16">
+    <footer className="bg-dark text-white py-10 sm:py-16">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid md:grid-cols-4 gap-10 mb-12">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 mb-10 sm:mb-12">
           {/* Brand */}
-          <div className="md:col-span-1">
+          <div className="col-span-2 md:col-span-1">
             <div className="font-serif text-2xl font-bold mb-2">AFG</div>
             <div className="text-white/50 text-xs uppercase tracking-[0.2em] mb-4">
               Revestimientos

@@ -36,7 +36,7 @@ export default function Hero() {
             Revestimientos de Excelencia
           </motion.span>
 
-          <h1 className="font-serif text-5xl md:text-7xl text-white leading-[1.1] mb-6">
+          <h1 className="font-serif text-3xl sm:text-5xl md:text-7xl text-white leading-[1.1] mb-6">
             Transformamos{' '}
             <br />
             superficies en{' '}
@@ -48,7 +48,7 @@ export default function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="text-white/80 text-lg md:text-xl mb-10 max-w-lg"
+            className="text-white/80 text-base md:text-xl mb-8 md:mb-10 max-w-lg"
           >
             Más de 15 años transformando espacios con revestimientos de alta calidad para proyectos comerciales y residenciales.
           </motion.p>
@@ -57,17 +57,17 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 1 }}
-            className="flex flex-wrap gap-4"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4"
           >
             <a
               href="#contacto"
-              className="bg-orange-brand text-white font-semibold px-8 py-4 rounded-full hover:bg-orange-brand-dark transition-all hover:scale-105"
+              className="bg-orange-brand text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-full hover:bg-orange-brand-dark transition-all hover:scale-105 text-center text-sm sm:text-base"
             >
               Pedí tu Presupuesto
             </a>
             <a
               href="#proyectos"
-              className="border-2 border-white text-white font-semibold px-8 py-4 rounded-full hover:bg-white hover:text-dark transition-all hover:scale-105"
+              className="border-2 border-white text-white font-semibold px-6 py-3 sm:px-8 sm:py-4 rounded-full hover:bg-white hover:text-dark transition-all hover:scale-105 text-center text-sm sm:text-base"
             >
               Ver Proyectos
             </a>
