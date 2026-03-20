@@ -29,17 +29,12 @@ export default function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 lg:px-8 flex items-center justify-between h-20">
-        <a href="#" className="flex items-center gap-2">
-          <span className={`font-serif text-2xl font-bold tracking-tight transition-colors ${
-            scrolled ? 'text-dark' : 'text-white'
-          }`}>
-            AFG
-          </span>
-          <span className={`text-xs uppercase tracking-[0.2em] transition-colors ${
-            scrolled ? 'text-gray-medium' : 'text-white/70'
-          }`}>
-            Revestimientos
-          </span>
+        <a href="#" className="flex items-center">
+          <img
+            src="/logo-afg.jpg"
+            alt="AFG Revestimientos"
+            className={`h-12 transition-all ${scrolled ? 'brightness-0' : 'brightness-0 invert'}`}
+          />
         </a>
 
         {/* Desktop nav */}

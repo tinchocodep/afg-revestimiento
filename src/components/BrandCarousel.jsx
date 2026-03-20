@@ -2,14 +2,17 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 
 const brands = [
+  'Ford',
+  'Toyota',
+  'Volkswagen',
   'Pradecon Racing',
   'Movistar Arena',
+  'Baterías Moura',
+  'Zanazzi Porsche',
+  'NewConcret',
+  'Weber',
   'Conteplat',
   'Cozzuol',
-  'Brand 5',
-  'Brand 6',
-  'Brand 7',
-  'Brand 8',
 ]
 
 function InfiniteScroll({ direction = 'left', children }) {

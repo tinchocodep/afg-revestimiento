@@ -87,6 +87,30 @@ export default function Services() {
             <ServiceCard key={service.title} service={service} index={i} />
           ))}
         </div>
+
+        {/* Licenciatarios */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+          className="mt-16 flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12"
+        >
+          <div className="flex items-center gap-4 bg-white rounded-2xl px-8 py-5 shadow-sm border border-gray-100">
+            <div className="w-3 h-3 bg-orange-brand rounded-full" />
+            <div>
+              <div className="text-xs text-gray-medium uppercase tracking-wider">Licenciatario Oficial</div>
+              <div className="font-serif text-xl font-bold">Edfan</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-4 bg-white rounded-2xl px-8 py-5 shadow-sm border border-gray-100">
+            <div className="w-3 h-3 bg-orange-brand rounded-full" />
+            <div>
+              <div className="text-xs text-gray-medium uppercase tracking-wider">Licenciatario Oficial</div>
+              <div className="font-serif text-xl font-bold">NewConcret</div>
+            </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   )
