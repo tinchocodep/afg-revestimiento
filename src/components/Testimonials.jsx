@@ -1,114 +1,46 @@
-import { useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
-
 const testimonials = [
   {
     name: 'Martín Rodríguez',
     role: 'Propietario',
-    text: 'El equipo de AFG transformó por completo nuestro living. El microcemento quedó impecable y superó todas nuestras expectativas. Profesionalismo de primera.',
-    rating: 5,
+    text: 'El equipo de AFG transformó por completo nuestro living. El microcemento quedó impecable y superó todas nuestras expectativas.',
     location: 'Nordelta, Buenos Aires',
   },
   {
     name: 'Arq. Florencia Morales',
     role: 'Arquitecta',
-    text: 'Trabajar con AFG es sinónimo de confianza. Los plazos se cumplen, la calidad es excepcional y la atención al detalle es algo que valoro muchísimo como profesional.',
-    rating: 5,
+    text: 'Trabajar con AFG es sinónimo de confianza. Cumplen los plazos, la calidad es excepcional y cuidan cada detalle.',
     location: 'Palermo, CABA',
   },
   {
     name: 'Carlos Fernández',
-    role: 'Dueño Restaurant',
-    text: 'Renovaron todo el local comercial en tiempo récord. Los clientes siempre elogian el acabado de las paredes. Sin duda, la mejor inversión que hicimos.',
-    rating: 5,
+    role: 'Dueño de restaurante',
+    text: 'Renovaron todo el local en tiempo récord. Los clientes siempre elogian el acabado de las paredes.',
     location: 'Puerto Madero, CABA',
   },
 ]
 
 export default function Testimonials() {
-  const [current, setCurrent] = useState(0)
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
-
-  const next = () => setCurrent((c) => (c + 1) % testimonials.length)
-  const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length)
-
   return (
-    <section className="py-16 sm:py-24 lg:py-32 bg-dark text-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <motion.div
-          ref={titleRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={titleInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-10 sm:mb-16"
-        >
-          <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
-            Testimonios
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 italic">
-            Lo que Dicen Nuestros Clientes
-          </h2>
-        </motion.div>
+    <section className="bg-cal py-20 sm:py-28 lg:py-36">
+      <div className="max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12">
+        <h2 className="font-medium text-5xl sm:text-6xl leading-[1] tracking-[-0.03em] max-w-[14ch]">
+          Lo que dicen nuestros clientes
+        </h2>
 
-        <div className="max-w-3xl mx-auto relative">
-          <Quote className="w-10 h-10 sm:w-16 sm:h-16 text-orange-brand/20 absolute -top-2 -left-2 sm:-top-4 sm:-left-4" />
-
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.4 }}
-            className="text-center"
-          >
-            <div className="flex justify-center gap-1 mb-6">
-              {Array.from({ length: testimonials[current].rating }).map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-orange-brand text-orange-brand" />
-              ))}
-            </div>
-
-            <p className="text-base sm:text-xl md:text-2xl leading-relaxed text-white/90 mb-6 sm:mb-8 font-light italic">
-              &ldquo;{testimonials[current].text}&rdquo;
-            </p>
-
-            <div>
-              <div className="font-semibold text-lg">{testimonials[current].name}</div>
-              <div className="text-white/50 text-sm">
-                {testimonials[current].role} &middot; {testimonials[current].location}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Navigation */}
-          <div className="flex justify-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:bg-orange-brand hover:border-orange-brand transition-all"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-2">
-              {testimonials.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`w-2.5 h-2.5 rounded-full transition-all ${
-                    i === current ? 'bg-orange-brand w-8' : 'bg-white/30'
-                  }`}
-                />
-              ))}
-            </div>
-
-            <button
-              onClick={next}
-              className="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:bg-orange-brand hover:border-orange-brand transition-all"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
+        <div className="grid md:grid-cols-3 gap-10 md:gap-8 lg:gap-12 mt-12 sm:mt-16">
+          {testimonials.map((t) => (
+            <figure key={t.name} className="border-t-2 border-tinta pt-6">
+              <blockquote className="text-xl sm:text-2xl leading-snug tracking-[-0.01em]">
+                “{t.text}”
+              </blockquote>
+              <figcaption className="mt-6">
+                <span className="block font-medium text-lg">{t.name}</span>
+                <span className="block text-piedra">
+                  {t.role}, {t.location}
+                </span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </div>
     </section>

@@ -1,110 +1,39 @@
-import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { MessageSquare, Ruler, HardHat, CheckCircle2 } from 'lucide-react'
-
 const steps = [
   {
-    number: '01',
-    icon: MessageSquare,
     title: 'Consulta',
-    description: 'Nos reunimos para entender tu visión, necesidades y presupuesto. Asesoramos sobre los mejores materiales y técnicas.',
+    text: 'Nos contás qué querés hacer y te asesoramos sobre el material y la técnica que mejor van.',
   },
   {
-    number: '02',
-    icon: Ruler,
     title: 'Planificación',
-    description: 'Diseñamos una propuesta detallada con materiales, cronograma y presupuesto ajustado a tu proyecto.',
+    text: 'Armamos una propuesta con materiales, plazos y presupuesto ajustado a tu obra.',
   },
   {
-    number: '03',
-    icon: HardHat,
     title: 'Ejecución',
-    description: 'Nuestro equipo especializado ejecuta cada etapa con precisión, control de calidad y mínima interrupción.',
+    text: 'Nuestro equipo trabaja cada etapa con control de calidad y la menor interrupción posible.',
   },
   {
-    number: '04',
-    icon: CheckCircle2,
     title: 'Entrega',
-    description: 'Inspección final, limpieza y entrega con garantía. Tu espacio transformado, listo para disfrutar.',
+    text: 'Inspección final, limpieza y entrega con garantía. El espacio queda listo para usar.',
   },
 ]
 
-function StepCard({ step, index }) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-80px' })
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.6, delay: index * 0.15 }}
-      className="relative flex gap-4 sm:gap-6 items-start"
-    >
-      {/* Number & line */}
-      <div className="flex flex-col items-center shrink-0">
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-orange-brand rounded-xl sm:rounded-2xl flex items-center justify-center text-white font-serif text-lg sm:text-2xl font-bold shadow-lg shadow-orange-brand/25">
-          {step.number}
-        </div>
-        {index < steps.length - 1 && (
-          <div className="w-0.5 h-full bg-orange-brand/20 mt-2 min-h-[40px]" />
-        )}
-      </div>
-
-      {/* Content */}
-      <div className="pb-12">
-        <div className="flex items-center gap-3 mb-2">
-          <step.icon className="w-5 h-5 text-orange-brand" />
-          <h3 className="font-serif text-xl sm:text-2xl font-bold">{step.title}</h3>
-        </div>
-        <p className="text-gray-medium leading-relaxed">{step.description}</p>
-      </div>
-    </motion.div>
-  )
-}
-
 export default function Process() {
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
-
   return (
-    <section id="proceso" className="py-16 sm:py-24 lg:py-32 bg-gray-light">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-start">
-          {/* Left: title */}
-          <motion.div
-            ref={titleRef}
-            initial={{ opacity: 0, y: 30 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="lg:sticky lg:top-32"
-          >
-            <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
-              Cómo trabajamos
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-4 sm:mb-5 italic">
-              Nuestro Proceso
-            </h2>
-            <p className="text-gray-medium text-base sm:text-lg leading-relaxed">
-              Un enfoque metódico y profesional que garantiza resultados excepcionales en cada proyecto que emprendemos.
-            </p>
-            <div className="mt-8 p-6 bg-white rounded-2xl">
-              <div className="flex items-center gap-4">
-                <div className="text-4xl font-serif font-bold text-orange-brand">15+</div>
-                <div className="text-sm text-gray-medium">
-                  Años de experiencia<br />en revestimientos
-                </div>
-              </div>
-            </div>
-          </motion.div>
+    <section id="proceso" className="bg-micro py-20 sm:py-28 lg:py-36">
+      <div className="max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12">
+        <h2 className="font-medium text-5xl sm:text-6xl leading-[1] tracking-[-0.03em] max-w-[16ch]">
+          Cómo empezamos un trabajo
+        </h2>
 
-          {/* Right: steps */}
-          <div className="flex flex-col">
-            {steps.map((step, i) => (
-              <StepCard key={step.number} step={step} index={i} />
-            ))}
-          </div>
-        </div>
+        <ol className="grid sm:grid-cols-2 lg:grid-cols-4 gap-x-8 lg:gap-x-12 gap-y-12 mt-12 sm:mt-16">
+          {steps.map((step, i) => (
+            <li key={step.title} className="border-t border-tinta/15 pt-5">
+              <span className="block text-6xl font-light text-hormigon leading-none tracking-[-0.04em]">{i + 1}</span>
+              <h3 className="text-2xl font-medium mt-6">{step.title}</h3>
+              <p className="text-piedra text-lg leading-relaxed mt-2">{step.text}</p>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   )

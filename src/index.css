@@ -1,37 +1,50 @@
 @import "tailwindcss";
-@import '@fontsource/playfair-display/400.css';
-@import '@fontsource/playfair-display/400-italic.css';
-@import '@fontsource/playfair-display/700.css';
-@import '@fontsource/playfair-display/700-italic.css';
-@import '@fontsource/inter/400.css';
-@import '@fontsource/inter/500.css';
-@import '@fontsource/inter/600.css';
-@import '@fontsource/inter/700.css';
+@import '@fontsource-variable/montserrat';
 
+/* Montserrat: la misma geometría que la tipografía del logo de AFG.
+   Paleta tomada del material: hormigón, microcemento y el negro del logo.
+   El naranja queda solo para la acción principal, como la señalética de obra. */
 @theme {
-  --font-serif: 'Playfair Display', serif;
-  --font-sans: 'Inter', sans-serif;
-  --color-orange-brand: #E8642C;
-  --color-orange-brand-dark: #D4551F;
-  --color-dark: #1A1A1A;
-  --color-gray-light: #F5F5F0;
-  --color-gray-medium: #8A8A8A;
+  --font-sans: 'Montserrat Variable', 'Gotham', 'Helvetica Neue', system-ui, sans-serif;
+  --color-tinta: #141413;
+  --color-piedra: #5c5a55;
+  --color-hormigon: #9a978f;
+  --color-micro: #e6e4df;
+  --color-cal: #f3f2ef;
+  --color-grafito: #222320;
+  --color-naranja: #e8642c;
+  --color-naranja-claro: #f07a45;
 }
 
 html {
   scroll-behavior: smooth;
+  background-color: var(--color-grafito);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  color: var(--color-dark);
+  color: var(--color-tinta);
+  background-color: var(--color-micro);
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-naranja);
+  outline-offset: 3px;
 }
 
 ::selection {
-  background-color: var(--color-orange-brand);
-  color: white;
+  background-color: var(--color-naranja);
+  color: var(--color-tinta);
 }
 
 #root {

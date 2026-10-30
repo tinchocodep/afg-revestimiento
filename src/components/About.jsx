@@ -1,84 +1,68 @@
-import { useRef } from 'react'
-import { motion, useInView, useScroll, useTransform } from 'framer-motion'
-import { Award, Users, MapPin, ThumbsUp } from 'lucide-react'
-
 const stats = [
-  { icon: Award, number: '500+', label: 'Proyectos Completados' },
-  { icon: Users, number: '15+', label: 'Años de Experiencia' },
-  { icon: MapPin, number: '50+', label: 'Ciudades Alcanzadas' },
-  { icon: ThumbsUp, number: '98%', label: 'Clientes Satisfechos' },
+  { number: '500+', label: 'obras terminadas' },
+  { number: '15+', label: 'años de experiencia' },
+  { number: '50+', label: 'ciudades alcanzadas' },
+  { number: '98%', label: 'clientes satisfechos' },
+]
+
+const brands = [
+  'Movistar Arena',
+  'Pradecon Racing',
+  'Zanazzi Porsche',
+  'Ford',
+  'Toyota',
+  'Volkswagen',
+  'Baterías Moura',
+  'NewConcret',
+  'Weber',
+  'Conteplat',
+  'Cozzuol',
 ]
 
 export default function About() {
-  const sectionRef = useRef(null)
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start end', 'end start'],
-  })
-  const imageY = useTransform(scrollYProgress, [0, 1], [60, -60])
-
   return (
-    <section ref={sectionRef} className="py-16 sm:py-24 lg:py-32 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16 items-center">
-          {/* Image with parallax */}
-          <motion.div style={{ y: imageY }} className="relative">
-            <div className="rounded-3xl overflow-hidden aspect-[4/5]">
-              <img
-                src="/IMG_9301.JPG"
-                alt="AFG Revestimientos equipo de trabajo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-6 -right-6 bg-orange-brand text-white p-8 rounded-2xl shadow-xl hidden lg:block">
-              <div className="font-serif text-4xl font-bold">500+</div>
-              <div className="text-sm mt-1 text-white/80">Proyectos<br/>Completados</div>
-            </div>
-          </motion.div>
+    <section className="bg-micro py-20 sm:py-28 lg:py-36">
+      <div className="max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+          <img
+            src="/obras/IMG_9301.webp"
+            alt="Equipo de AFG puliendo el piso del Movistar Arena"
+            loading="lazy"
+            decoding="async"
+            className="lg:col-span-7 w-full aspect-[4/3] lg:aspect-[16/11] object-cover"
+          />
 
-          {/* Content */}
-          <motion.div
-            ref={titleRef}
-            initial={{ opacity: 0, x: 40 }}
-            animate={titleInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
-              Sobre nosotros
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-5 sm:mb-6 italic">
-              ADN AFG Revestimientos
+          <div className="lg:col-span-5">
+            <h2 className="font-medium text-5xl sm:text-6xl leading-[1] tracking-[-0.03em]">
+              Un equipo que trabaja en la obra
             </h2>
-            <p className="text-gray-medium text-base sm:text-lg leading-relaxed mb-5 sm:mb-6">
-              Con más de 15 años de trayectoria en el mercado argentino, nos especializamos en revestimientos continuos de alta gama. Cada proyecto es una oportunidad para crear superficies que combinan belleza, durabilidad y funcionalidad.
-            </p>
-            <p className="text-gray-medium leading-relaxed mb-8 sm:mb-10">
-              Nuestra filosofía se basa en la combinación de técnicas artesanales con materiales de última generación, logrando acabados únicos que superan las expectativas de nuestros clientes. Trabajamos con arquitectos, diseñadores y propietarios para materializar su visión.
+            <p className="text-piedra text-lg leading-relaxed mt-6 max-w-[48ch]">
+              Hace más de 15 años que hacemos revestimientos continuos de alta gama en todo el país. Combinamos técnicas
+              artesanales con materiales de última generación, y trabajamos junto a arquitectos, diseñadores y
+              propietarios para llevar cada proyecto a la superficie.
             </p>
 
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-4 sm:gap-6">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={titleInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.3 + i * 0.1 }}
-                  className="flex items-center gap-4"
-                >
-                  <div className="w-12 h-12 bg-orange-brand/10 rounded-xl flex items-center justify-center shrink-0">
-                    <stat.icon className="w-6 h-6 text-orange-brand" />
-                  </div>
-                  <div>
-                    <div className="font-serif text-2xl font-bold">{stat.number}</div>
-                    <div className="text-gray-medium text-xs">{stat.label}</div>
-                  </div>
-                </motion.div>
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-8 mt-10 pt-8 border-t border-tinta/15">
+              {stats.map((stat) => (
+                <div key={stat.label}>
+                  <dt className="sr-only">{stat.label}</dt>
+                  <dd className="font-medium text-4xl sm:text-5xl tracking-[-0.02em]">{stat.number}</dd>
+                  <dd className="text-piedra mt-1">{stat.label}</dd>
+                </div>
               ))}
-            </div>
-          </motion.div>
+            </dl>
+          </div>
+        </div>
+
+        <div className="mt-20 sm:mt-28">
+          <h3 className="text-2xl sm:text-3xl font-medium tracking-[-0.01em]">Empresas que nos eligieron</h3>
+          <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 mt-6">
+            {brands.map((brand) => (
+              <li key={brand} className="border-t border-tinta/15 py-4 text-lg sm:text-xl text-tinta/80">
+                {brand}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </section>

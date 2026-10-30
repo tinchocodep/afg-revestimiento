@@ -1,215 +1,195 @@
-import { useState, useRef } from 'react'
-import { motion, useInView, AnimatePresence } from 'framer-motion'
-import { Instagram } from 'lucide-react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { X, ChevronLeft, ChevronRight } from 'lucide-react'
+import { INSTAGRAM } from '../contacto'
 
-const categories = ['Todos', 'Comerciales', 'Residenciales', 'Exteriores']
-
+// ratio: proporción con la que se muestra la foto en la tira
 const projects = [
-  // Comerciales
-  {
-    title: 'Pradecon Racing - Nave',
-    category: 'Comerciales',
-    image: '/IMG_0185.jpg',
-    description: 'Piso pulido espejado en nave de Pradecon Racing',
-  },
-  {
-    title: 'Pradecon Racing - Taller',
-    category: 'Comerciales',
-    image: '/IMG_0189.jpg',
-    description: 'Revestimiento integral del taller de competición',
-  },
-  {
-    title: 'Pradecon Racing - Detalle',
-    category: 'Comerciales',
-    image: '/IMG_0188.jpg',
-    description: 'Acabado espejado de hormigón pulido',
-  },
-  {
-    title: 'Movistar Arena',
-    category: 'Comerciales',
-    image: '/IMG_9302.JPG',
-    description: 'Piso de hormigón pulido en Movistar Arena',
-  },
-  {
-    title: 'Movistar Arena - En Obra',
-    category: 'Comerciales',
-    image: '/IMG_9301.JPG',
-    description: 'Equipo AFG en acción en el Movistar Arena',
-  },
-  // Residenciales
-  {
-    title: 'Cocina Moderna',
-    category: 'Residenciales',
-    image: '/IMG_7348.JPG',
-    description: 'Microcemento en piso de cocina premium',
-  },
-  {
-    title: 'Baño de Diseño',
-    category: 'Residenciales',
-    image: '/IMG_9079.JPG',
-    description: 'Revestimiento en baño con piedra natural',
-  },
-  {
-    title: 'Baño Suite Premium',
-    category: 'Residenciales',
-    image: '/IMG_9304.JPG',
-    description: 'Microcemento y mármol en baño principal',
-  },
-  {
-    title: 'Salón con Vista al Jardín',
-    category: 'Residenciales',
-    image: '/IMG_9307.JPG',
-    description: 'Piso de microcemento continuo',
-  },
-  {
-    title: 'Living de Diseño',
-    category: 'Residenciales',
-    image: '/IMG_9309.JPG',
-    description: 'Microcemento integral en paredes y piso',
-  },
-  {
-    title: 'Salón con Piso Dorado',
-    category: 'Residenciales',
-    image: '/IMG_9300.JPG',
-    description: 'Hormigón pulido con acabado dorado',
-  },
-  {
-    title: 'Cocina con Quincho',
-    category: 'Residenciales',
-    image: '/IMG_9296.JPG',
-    description: 'Mesada con microcemento y parrilla',
-  },
-  {
-    title: 'Cocina Funcional',
-    category: 'Residenciales',
-    image: '/IMG_9305.JPG',
-    description: 'Piso de microcemento en cocina integral',
-  },
-  // Exteriores
-  {
-    title: 'Fachada Casa Moderna',
-    category: 'Exteriores',
-    image: '/IMG_9295.JPG',
-    description: 'Piso exterior de hormigón alisado',
-  },
-  {
-    title: 'Quincho con Techo de Madera',
-    category: 'Exteriores',
-    image: '/IMG_9297.JPG',
-    description: 'Revestimiento en paredes de quincho',
-  },
-  {
-    title: 'Sendero de Entrada',
-    category: 'Exteriores',
-    image: '/IMG_9298.JPG',
-    description: 'Camino de hormigón alisado exterior',
-  },
-  {
-    title: 'Borde de Pileta',
-    category: 'Exteriores',
-    image: '/IMG_9299.JPG',
-    description: 'Solario y borde de piscina en microcemento',
-  },
+  { title: 'Movistar Arena', category: 'Comercial', image: 'IMG_9302', ratio: 16 / 9, description: 'Piso de hormigón pulido' },
+  { title: 'Movistar Arena, en obra', category: 'Comercial', image: 'IMG_9301', ratio: 16 / 9, description: 'El equipo de AFG puliendo el piso' },
+  { title: 'Pradecon Racing', category: 'Comercial', image: 'IMG_0185', ratio: 16 / 9, description: 'Piso pulido espejado en la nave' },
+  { title: 'Pradecon Racing, taller', category: 'Comercial', image: 'IMG_0189', ratio: 16 / 9, description: 'Revestimiento integral del taller de competición' },
+  { title: 'Living de diseño', category: 'Casa', image: 'IMG_9309', ratio: 4 / 5, description: 'Microcemento integral en paredes y piso' },
+  { title: 'Baño suite', category: 'Casa', image: 'IMG_9304', ratio: 4 / 5, description: 'Microcemento y mármol en baño principal' },
+  { title: 'Salón con piso dorado', category: 'Casa', image: 'IMG_9300', ratio: 4 / 5, description: 'Hormigón pulido con acabado dorado' },
+  { title: 'Salón con vista al jardín', category: 'Casa', image: 'IMG_9307', ratio: 4 / 5, description: 'Piso de microcemento continuo' },
+  { title: 'Cocina moderna', category: 'Casa', image: 'IMG_7348', ratio: 4 / 5, description: 'Microcemento en piso de cocina' },
+  { title: 'Baño de diseño', category: 'Casa', image: 'IMG_9079', ratio: 4 / 5, description: 'Revestimiento en baño con piedra natural' },
+  { title: 'Cocina con quincho', category: 'Casa', image: 'IMG_9296', ratio: 3 / 2, description: 'Mesada de microcemento y parrilla' },
+  { title: 'Borde de pileta', category: 'Exterior', image: 'IMG_9299', ratio: 4 / 3, description: 'Solárium y borde de piscina en microcemento' },
+  { title: 'Fachada de casa moderna', category: 'Exterior', image: 'IMG_9295', ratio: 3 / 4, description: 'Piso exterior de hormigón alisado' },
+  { title: 'Quincho con techo de madera', category: 'Exterior', image: 'IMG_9297', ratio: 3 / 2, description: 'Revestimiento en paredes de quincho' },
+  { title: 'Sendero de entrada', category: 'Exterior', image: 'IMG_9298', ratio: 3 / 4, description: 'Camino de hormigón alisado' },
 ]
 
-export default function Projects() {
-  const [activeFilter, setActiveFilter] = useState('Todos')
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
+const src = (image) => `/obras/${image}.webp`
 
-  const filtered =
-    activeFilter === 'Todos'
-      ? projects
-      : projects.filter((p) => p.category === activeFilter)
+function Lightbox({ index, onClose, onMove }) {
+  const dialogRef = useRef(null)
+
+  useEffect(() => {
+    const dialog = dialogRef.current
+    if (index === null) {
+      if (dialog.open) dialog.close()
+      return
+    }
+    if (!dialog.open) dialog.showModal()
+  }, [index])
+
+  const onKeyDown = (e) => {
+    if (e.key === 'ArrowRight') onMove(1)
+    if (e.key === 'ArrowLeft') onMove(-1)
+  }
+
+  const item = index === null ? null : projects[index]
 
   return (
-    <section id="proyectos" className="py-16 sm:py-24 lg:py-32 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <motion.div
-          ref={titleRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={titleInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8 sm:mb-12"
-        >
-          <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
-            Portfolio
-          </span>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-5">
-            Proyectos Destacados
-          </h2>
-        </motion.div>
-
-        {/* Filters */}
-        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-12">
-          {categories.map((cat) => (
+    <dialog
+      ref={dialogRef}
+      onClose={onClose}
+      onKeyDown={onKeyDown}
+      onClick={(e) => e.target === dialogRef.current && onClose()}
+      className="m-0 p-0 w-full h-full max-w-none max-h-none bg-grafito/95 text-white backdrop:bg-transparent"
+    >
+      {item && (
+        <div className="h-full flex flex-col">
+          <div className="flex items-center justify-between px-5 sm:px-8 py-4">
+            <p className="text-white/60 text-sm tabular-nums">
+              {index + 1} / {projects.length}
+            </p>
             <button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
-              className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium transition-all ${
-                activeFilter === cat
-                  ? 'bg-orange-brand text-white'
-                  : 'bg-gray-light text-dark hover:bg-gray-200'
-              }`}
+              onClick={onClose}
+              aria-label="Cerrar"
+              className="w-11 h-11 flex items-center justify-center rounded hover:bg-white/10 transition-colors"
             >
-              {cat}
+              <X className="w-6 h-6" />
             </button>
-          ))}
+          </div>
+          <div className="flex-1 min-h-0 flex items-center gap-2 px-2 sm:px-6">
+            <button
+              onClick={() => onMove(-1)}
+              aria-label="Foto anterior"
+              className="hidden sm:flex shrink-0 w-12 h-12 items-center justify-center rounded hover:bg-white/10 transition-colors"
+            >
+              <ChevronLeft className="w-7 h-7" />
+            </button>
+            <img src={src(item.image)} alt={item.title} className="flex-1 min-w-0 h-full object-contain" />
+            <button
+              onClick={() => onMove(1)}
+              aria-label="Foto siguiente"
+              className="hidden sm:flex shrink-0 w-12 h-12 items-center justify-center rounded hover:bg-white/10 transition-colors"
+            >
+              <ChevronRight className="w-7 h-7" />
+            </button>
+          </div>
+          <div className="px-5 sm:px-8 py-5 flex items-end justify-between gap-4">
+            <div>
+              <p className="text-lg font-medium">{item.title}</p>
+              <p className="text-white/60">{item.description}</p>
+            </div>
+            <div className="flex sm:hidden gap-2">
+              <button onClick={() => onMove(-1)} aria-label="Foto anterior" className="w-11 h-11 flex items-center justify-center rounded bg-white/10">
+                <ChevronLeft className="w-6 h-6" />
+              </button>
+              <button onClick={() => onMove(1)} aria-label="Foto siguiente" className="w-11 h-11 flex items-center justify-center rounded bg-white/10">
+                <ChevronRight className="w-6 h-6" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </dialog>
+  )
+}
+
+// La sección queda fija mientras el scroll vertical corre la tira de fotos hacia la izquierda
+export default function Projects() {
+  const sectionRef = useRef(null)
+  const viewportRef = useRef(null)
+  const trackRef = useRef(null)
+  const [distance, setDistance] = useState(0)
+  const [open, setOpen] = useState(null)
+
+  useLayoutEffect(() => {
+    const measure = () => setDistance(Math.max(0, trackRef.current.scrollWidth - viewportRef.current.clientWidth))
+    measure()
+    const ro = new ResizeObserver(measure)
+    ro.observe(trackRef.current)
+    ro.observe(viewportRef.current)
+    return () => ro.disconnect()
+  }, [])
+
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
+  const x = useTransform(scrollYProgress, (v) => -v * distance)
+  const current = useTransform(scrollYProgress, (v) => String(Math.min(projects.length, Math.floor(v * projects.length) + 1)))
+
+  const move = (delta) => setOpen((i) => (i + delta + projects.length) % projects.length)
+
+  return (
+    <section
+      ref={sectionRef}
+      id="proyectos"
+      className="relative bg-grafito text-white"
+      style={{ height: `calc(100svh + ${distance}px)` }}
+    >
+      <div ref={viewportRef} className="sticky top-0 h-[100svh] overflow-hidden flex flex-col">
+        <div className="max-w-[1360px] w-full mx-auto px-5 sm:px-8 lg:px-12 pt-24 sm:pt-28 flex items-end justify-between gap-6">
+          <div>
+            <h2 className="font-medium text-4xl sm:text-5xl lg:text-6xl leading-none tracking-[-0.025em]">Obras</h2>
+            <p className="text-white/60 mt-3">De estadios y talleres a casas en Buenos Aires.</p>
+          </div>
+          <p className="text-white/60 tabular-nums shrink-0" aria-hidden="true">
+            <motion.span className="text-white">{current}</motion.span> / {projects.length}
+          </p>
         </div>
 
-        {/* Grid */}
-        <motion.div layout className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
-          <AnimatePresence mode="popLayout">
-            {filtered.map((project) => (
-              <motion.div
-                key={project.title}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="group relative overflow-hidden rounded-2xl cursor-pointer aspect-[4/3]"
-              >
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-300" />
-                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-6 md:translate-y-4 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100 transition-all duration-300">
-                  <span className="text-orange-brand text-[10px] sm:text-xs font-semibold uppercase tracking-wider">
-                    {project.category}
-                  </span>
-                  <h3 className="text-white font-serif text-sm sm:text-xl font-bold mt-0.5 sm:mt-1">
-                    {project.title}
-                  </h3>
-                  <p className="text-white/70 text-xs sm:text-sm mt-0.5 sm:mt-1 hidden sm:block">{project.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
-
-        {/* Instagram CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6 }}
-          className="mt-10 sm:mt-16 text-center"
-        >
-          <a
-            href="https://www.instagram.com/revestimientosafg"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 sm:gap-3 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-400 text-white font-semibold px-5 py-3 sm:px-8 sm:py-4 rounded-full hover:scale-105 transition-transform text-sm sm:text-base"
+        <div className="flex-1 min-h-0 flex items-center">
+          <motion.ul
+            ref={trackRef}
+            style={{ x }}
+            className="flex items-start gap-4 sm:gap-6 px-5 sm:px-8 lg:px-[max(3rem,calc((100vw-1360px)/2+3rem))] [--strip-h:56svh] sm:[--strip-h:58svh] [--strip-max-w:82vw] sm:[--strip-max-w:90vw] will-change-transform"
           >
-            <Instagram className="w-6 h-6" />
-            Seguinos en Instagram para ver más proyectos
-          </a>
-          <p className="text-gray-medium text-sm mt-3">@revestimientosafg</p>
-        </motion.div>
+            {projects.map((project, i) => (
+              <li key={project.image} className="shrink-0">
+                <button
+                  onClick={() => setOpen(i)}
+                  aria-label={`Ver foto: ${project.title}`}
+                  className="block overflow-hidden group"
+                >
+                  <img
+                    src={src(project.image)}
+                    alt={project.title}
+                    loading={i < 4 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    style={{ height: 'var(--strip-h)', width: `min(calc(var(--strip-h) * ${project.ratio.toFixed(3)}), var(--strip-max-w))` }}
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                  />
+                </button>
+                <div className="mt-4 flex gap-4 justify-between w-0 min-w-full">
+                  <div>
+                    <p className="font-medium">{project.title}</p>
+                    <p className="text-white/55 text-sm mt-0.5">{project.description}</p>
+                  </div>
+                  <p className="text-white/40 text-sm shrink-0">{project.category}</p>
+                </div>
+              </li>
+            ))}
+            <li className="shrink-0 self-stretch">
+              <a
+                href={INSTAGRAM}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="h-[var(--strip-h)] aspect-[4/5] max-w-[var(--strip-max-w)] flex flex-col justify-end p-6 sm:p-8 border border-white/15 hover:border-white/40 transition-colors"
+              >
+                <span className="text-2xl sm:text-3xl font-medium leading-tight tracking-[-0.02em]">Más obras en Instagram</span>
+                <span className="text-white/60 mt-2">@revestimientosafg</span>
+              </a>
+            </li>
+          </motion.ul>
+        </div>
       </div>
+
+      <Lightbox index={open} onClose={() => setOpen(null)} onMove={move} />
     </section>
   )
 }

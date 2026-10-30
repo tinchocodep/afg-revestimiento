@@ -1,132 +1,101 @@
-import { useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { Send, Phone, Mail, MapPin } from 'lucide-react'
+import { TELEFONO, WHATSAPP, EMAIL, INSTAGRAM } from '../contacto'
+
+const fieldClass =
+  'w-full bg-transparent border-b border-white/30 focus:border-naranja outline-none py-3 text-lg text-white placeholder:text-white/45 transition-colors'
 
 export default function Contact() {
-  const titleRef = useRef(null)
-  const titleInView = useInView(titleRef, { once: true, margin: '-80px' })
-  const [submitted, setSubmitted] = useState(false)
-
+  // El formulario arma el mensaje y lo abre en WhatsApp, que es donde se responde
   const handleSubmit = (e) => {
     e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
+    const data = new FormData(e.currentTarget)
+    const lines = [
+      `Hola, soy ${data.get('nombre')}.`,
+      data.get('tipo') && `Tipo de obra: ${data.get('tipo')}`,
+      data.get('zona') && `Zona: ${data.get('zona')}`,
+      data.get('mensaje'),
+    ].filter(Boolean)
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener')
   }
 
   return (
-    <section id="contacto" className="py-16 sm:py-24 lg:py-32 bg-gray-light">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-10 sm:gap-16">
-          {/* Left: form */}
-          <motion.div
-            ref={titleRef}
-            initial={{ opacity: 0, y: 30 }}
-            animate={titleInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            <span className="text-orange-brand text-sm font-semibold uppercase tracking-[0.15em]">
-              Contactanos
-            </span>
-            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-4 sm:mb-5 italic">
-              Iniciemos tu Proyecto
-            </h2>
-            <p className="text-gray-medium text-base sm:text-lg mb-8 sm:mb-10">
-              Completá el formulario y nos pondremos en contacto dentro de las próximas 24 horas.
-            </p>
+    <section id="contacto" className="bg-grafito text-white py-20 sm:py-28 lg:py-36">
+      <div className="max-w-[1360px] mx-auto px-5 sm:px-8 lg:px-12 grid lg:grid-cols-12 gap-14 lg:gap-12">
+        <div className="lg:col-span-6">
+          <h2 className="font-medium text-5xl sm:text-6xl lg:text-7xl leading-[1] tracking-[-0.03em] max-w-[12ch]">
+            Contanos qué querés revestir
+          </h2>
+          <p className="text-white/70 text-lg sm:text-xl leading-relaxed mt-6 max-w-[38ch]">
+            Te respondemos dentro de las 24 horas con una primera idea de costos y plazos.
+          </p>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid md:grid-cols-2 gap-5">
-                <input
-                  type="text"
-                  placeholder="Nombre"
-                  required
-                  className="w-full px-5 py-4 rounded-xl bg-white border border-gray-200 focus:border-orange-brand focus:ring-2 focus:ring-orange-brand/20 outline-none transition-all text-sm"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  required
-                  className="w-full px-5 py-4 rounded-xl bg-white border border-gray-200 focus:border-orange-brand focus:ring-2 focus:ring-orange-brand/20 outline-none transition-all text-sm"
-                />
-              </div>
-              <input
-                type="tel"
-                placeholder="Teléfono"
-                className="w-full px-5 py-4 rounded-xl bg-white border border-gray-200 focus:border-orange-brand focus:ring-2 focus:ring-orange-brand/20 outline-none transition-all text-sm"
-              />
-              <select
-                className="w-full px-5 py-4 rounded-xl bg-white border border-gray-200 focus:border-orange-brand focus:ring-2 focus:ring-orange-brand/20 outline-none transition-all text-sm text-gray-medium"
-              >
-                <option value="">Tipo de Proyecto</option>
-                <option>Residencial</option>
-                <option>Comercial</option>
-                <option>Restauración</option>
-                <option>Otro</option>
-              </select>
-              <textarea
-                placeholder="Contanos sobre tu proyecto..."
-                rows={4}
-                className="w-full px-5 py-4 rounded-xl bg-white border border-gray-200 focus:border-orange-brand focus:ring-2 focus:ring-orange-brand/20 outline-none transition-all text-sm resize-none"
-              />
-              <button
-                type="submit"
-                className="w-full bg-orange-brand text-white font-semibold px-8 py-4 rounded-full hover:bg-orange-brand-dark transition-all hover:scale-[1.02] flex items-center justify-center gap-2"
-              >
-                {submitted ? (
-                  'Mensaje Enviado ✓'
-                ) : (
-                  <>
-                    Enviar Solicitud
-                    <Send className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-          </motion.div>
-
-          {/* Right: info + image */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={titleInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col gap-8"
-          >
-            <div className="bg-orange-brand rounded-3xl p-6 sm:p-8 text-white">
-              <h3 className="font-serif text-2xl font-bold mb-6">AFG Revestimientos</h3>
-              <div className="space-y-4">
-                <div className="flex items-start gap-4">
-                  <Phone className="w-5 h-5 mt-0.5 shrink-0" />
-                  <div>
-                    <div className="font-medium">Teléfono</div>
-                    <div className="text-white/80 text-sm">+54 9 11 3275-9319</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <Mail className="w-5 h-5 mt-0.5 shrink-0" />
-                  <div>
-                    <div className="font-medium">Email</div>
-                    <div className="text-white/80 text-sm">gfeito@afgconstructora.com.ar</div>
-                  </div>
-                </div>
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-5 h-5 mt-0.5 shrink-0" />
-                  <div>
-                    <div className="font-medium">Ubicación</div>
-                    <div className="text-white/80 text-sm">Buenos Aires, Argentina</div>
-                  </div>
-                </div>
-              </div>
+          <dl className="mt-12 grid sm:grid-cols-2 gap-x-8 gap-y-6 text-lg">
+            <div>
+              <dt className="text-white/55">WhatsApp y teléfono</dt>
+              <dd>
+                <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" className="hover:text-naranja-claro transition-colors">
+                  {TELEFONO}
+                </a>
+              </dd>
             </div>
-
-            <div className="rounded-3xl overflow-hidden flex-1 min-h-[200px] sm:min-h-[300px]">
-              <img
-                src="/IMG_9309.JPG"
-                alt="AFG Revestimientos oficina"
-                className="w-full h-full object-cover"
-              />
+            <div>
+              <dt className="text-white/55">Email</dt>
+              <dd>
+                <a href={`mailto:${EMAIL}`} className="hover:text-naranja-claro transition-colors break-all">
+                  {EMAIL}
+                </a>
+              </dd>
             </div>
-          </motion.div>
+            <div>
+              <dt className="text-white/55">Instagram</dt>
+              <dd>
+                <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" className="hover:text-naranja-claro transition-colors">
+                  @revestimientosafg
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-white/55">Ubicación</dt>
+              <dd>Buenos Aires, Argentina</dd>
+            </div>
+          </dl>
         </div>
+
+        <form onSubmit={handleSubmit} className="lg:col-span-5 lg:col-start-8 flex flex-col gap-6 lg:pt-3">
+          <label className="block">
+            <span className="sr-only">Nombre</span>
+            <input name="nombre" type="text" required placeholder="Tu nombre" autoComplete="name" className={fieldClass} />
+          </label>
+          <label className="block">
+            <span className="sr-only">Tipo de obra</span>
+            <select name="tipo" defaultValue="" className={`${fieldClass} [&>option]:text-tinta`}>
+              <option value="">Tipo de obra</option>
+              <option>Casa o departamento</option>
+              <option>Local u oficina</option>
+              <option>Nave o industria</option>
+              <option>Exterior o pileta</option>
+              <option>Reparación</option>
+            </select>
+          </label>
+          <label className="block">
+            <span className="sr-only">Zona</span>
+            <input name="zona" type="text" placeholder="Zona o barrio" className={fieldClass} />
+          </label>
+          <label className="block">
+            <span className="sr-only">Mensaje</span>
+            <textarea
+              name="mensaje"
+              rows={4}
+              placeholder="Qué superficie es y cuántos metros, más o menos"
+              className={`${fieldClass} resize-none`}
+            />
+          </label>
+          <button
+            type="submit"
+            className="mt-2 bg-naranja text-tinta font-medium text-lg px-7 py-4 rounded hover:bg-naranja-claro transition-colors"
+          >
+            Enviar por WhatsApp
+          </button>
+        </form>
       </div>
     </section>
   )

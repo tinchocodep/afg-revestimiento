@@ -1,28 +1,29 @@
+import { MotionConfig } from 'framer-motion'
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
+import Film from './components/Film'
 import Services from './components/Services'
 import Projects from './components/Projects'
-import Process from './components/Process'
-import BrandCarousel from './components/BrandCarousel'
 import About from './components/About'
 import Testimonials from './components/Testimonials'
+import Process from './components/Process'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
 
 function App() {
   return (
-    <>
+    <MotionConfig reducedMotion="user">
       <Navbar />
-      <Hero />
-      <Services />
-      <Projects />
-      <Process />
-      <BrandCarousel />
-      <About />
-      <Testimonials />
-      <Contact />
+      <main>
+        <Film />
+        <Services />
+        <Projects />
+        <About />
+        <Testimonials />
+        <Process />
+        <Contact />
+      </main>
       <Footer />
-    </>
+    </MotionConfig>
   )
 }
 
