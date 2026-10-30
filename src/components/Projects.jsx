@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { motion, useScroll, useTransform } from 'framer-motion'
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
 import { X, ChevronLeft, ChevronRight } from 'lucide-react'
 import { INSTAGRAM } from '../contacto'
 
@@ -120,7 +120,8 @@ export default function Projects() {
   }, [])
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
-  const x = useTransform(scrollYProgress, (v) => -v * distance)
+  const smooth = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.0001 })
+  const x = useTransform(smooth, (v) => -v * distance)
   const current = useTransform(scrollYProgress, (v) => String(Math.min(projects.length, Math.floor(v * projects.length) + 1)))
 
   const move = (delta) => setOpen((i) => (i + delta + projects.length) % projects.length)

@@ -1,57 +1,52 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useSpring, useTransform, useMotionValueEvent } from 'framer-motion'
 
-// El video de obra está exportado cuadro por cuadro (public/film), a 12 cuadros por segundo:
+// El video de obra está exportado cuadro por cuadro (public/film), a 24 cuadros por segundo:
 // "d" en 16:9 para pantallas apaisadas y "m" recortado en vertical, siguiendo a cada toma.
-const FRAME_COUNT = 258
+const FRAME_COUNT = 516
 const LAST = FRAME_COUNT - 1
 const DECODE_AHEAD = 6
 const framePath = (set, i) => `/film/${set}/${String(i).padStart(3, '0')}.webp`
 
-// Tomas, en cuadros (con fundidos de 6 cuadros entre una y otra):
-// 0–48 llana sobre microcemento, 42–90 aplicación en piso, 84–132 equipo en el Movistar Arena,
-// 126–174 piso espejado de Pradecon Racing, 168–216 pileta, 210–257 living terminado.
+// Tomas, en cuadros (con fundidos de 12 cuadros entre una y otra):
+// 0–96 llana sobre microcemento, 84–180 aplicación en piso, 168–264 equipo en el Movistar Arena,
+// 252–348 piso espejado de Pradecon Racing, 336–432 pileta, 420–515 living terminado.
 const chapters = [
   {
-    from: 50,
-    to: 84,
+    from: 100,
+    to: 168,
     label: 'Paso 1 de 3',
     title: 'Aplicamos a mano',
     text: 'Microcemento en capas finas y sin juntas, sobre pisos, paredes y mesadas.',
   },
   {
-    from: 92,
-    to: 126,
+    from: 184,
+    to: 252,
     label: 'Paso 2 de 3',
     title: 'Pulimos con equipo propio',
     text: 'Maquinaria profesional y personal de AFG en cada obra. Acá, en el Movistar Arena.',
   },
   {
-    from: 134,
-    to: 168,
+    from: 268,
+    to: 336,
     label: 'Paso 3 de 3',
     title: 'Hasta que el piso refleja',
     text: 'Hormigón pulido con brillo espejo, hecho para tránsito pesado. Nave de Pradecon Racing.',
   },
   {
-    from: 176,
-    to: 210,
+    from: 352,
+    to: 420,
     title: 'También al aire libre',
     text: 'Bordes de pileta, solárium y caminos que aguantan sol y lluvia.',
   },
 ]
 
-// Primero el cuadro 0, después cada 16, 8, 4, 2 y al final el resto:
-// así se puede recorrer el video entero mientras terminan de llegar los cuadros.
-function loadOrder() {
-  const seen = new Set()
+// Primero una pasada gruesa, para poder recorrer todo el video desde el principio.
+function coarseOrder() {
   const order = []
-  for (const stride of [LAST, 16, 8, 4, 2, 1]) {
+  for (const stride of [LAST, 16, 8]) {
     for (let i = 0; i <= LAST; i += stride) {
-      if (!seen.has(i)) {
-        seen.add(i)
-        order.push(i)
-      }
+      if (!order.includes(i)) order.push(i)
     }
   }
   return order
@@ -96,25 +91,34 @@ export default function Film() {
   const sectionRef = useRef(null)
   const canvasRef = useRef(null)
   const framesRef = useRef([])
-  const targetRef = useRef(0)
+  const positionRef = useRef(0)
+  const directionRef = useRef(1)
   const drawnRef = useRef(null)
   const rafRef = useRef(0)
   const sizeRef = useRef(null)
   const set = useFrameSet()
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] })
-  // Un poco de inercia para que el video no salte con cada rueda del mouse
-  const progress = useSpring(scrollYProgress, { stiffness: 180, damping: 36, restDelta: 0.0005 })
+  // Inercia suave: el video se desliza en vez de seguir cada salto de la rueda o del dedo
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, restDelta: 0.0001 })
 
   const render = () => {
     rafRef.current = 0
     const canvas = canvasRef.current
     if (!canvas) return
     const frames = framesRef.current
-    const target = targetRef.current
-    let img = frames[target]
-    for (let d = 1; !img && d <= LAST; d++) img = frames[target - d] || frames[target + d]
-    if (!img || !sizeRef.current || img === drawnRef.current) return
+    const position = positionRef.current
+    const base = Math.floor(position)
+    let img = frames[base]
+    for (let d = 1; !img && d <= LAST; d++) img = frames[base - d] || frames[base + d]
+    if (!img || !sizeRef.current) return
+
+    // Entre un cuadro y el siguiente se funden según cuánto se bajó, así el movimiento
+    // sigue siendo continuo aunque se baje muy despacio.
+    const next = img === frames[base] ? frames[base + 1] : undefined
+    const blend = next ? Math.round((position - base) * 16) / 16 : 0
+    const drawn = drawnRef.current
+    if (drawn && drawn.img === img && drawn.next === next && drawn.blend === blend) return
 
     // El canvas nunca tiene más píxeles que el cuadro: dibujar es mucho más barato
     // y la GPU lo agranda por CSS sin costo.
@@ -131,8 +135,14 @@ export default function Film() {
     const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight)
     const dw = img.naturalWidth * scale
     const dh = img.naturalHeight * scale
-    canvas.getContext('2d', { alpha: false }).drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh)
-    drawnRef.current = img
+    const ctx = canvas.getContext('2d', { alpha: false })
+    ctx.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh)
+    if (blend > 0) {
+      ctx.globalAlpha = blend
+      ctx.drawImage(next, (w - dw) / 2, (h - dh) / 2, dw, dh)
+      ctx.globalAlpha = 1
+    }
+    drawnRef.current = { img, next, blend }
   }
 
   const requestRender = () => {
@@ -140,13 +150,16 @@ export default function Film() {
   }
 
   useMotionValueEvent(progress, 'change', (v) => {
-    const next = Math.min(LAST, Math.max(0, Math.round(v * LAST)))
-    if (next === targetRef.current) return
-    const direction = next > targetRef.current ? 1 : -1
-    targetRef.current = next
-    // Decodificar por adelantado solo los cuadros que vienen: tenerlos todos
-    // decodificados a la vez puede agotar la memoria de un celular.
-    for (let k = 1; k <= DECODE_AHEAD; k++) framesRef.current[next + direction * k]?.decode().catch(() => {})
+    const position = Math.min(LAST, Math.max(0, v * LAST))
+    const base = Math.floor(position)
+    if (base !== Math.floor(positionRef.current)) {
+      const direction = position > positionRef.current ? 1 : -1
+      directionRef.current = direction
+      // Decodificar por adelantado solo los cuadros que vienen: tenerlos todos
+      // decodificados a la vez puede agotar la memoria de un celular.
+      for (let k = 1; k <= DECODE_AHEAD; k++) framesRef.current[base + direction * k]?.decode().catch(() => {})
+    }
+    positionRef.current = position
     requestRender()
   })
 
@@ -156,12 +169,34 @@ export default function Film() {
     const frames = new Array(FRAME_COUNT)
     framesRef.current = frames
     drawnRef.current = null
-    const order = loadOrder()
-    let next = 0
+    const coarse = coarseOrder()
+    const claimed = new Set()
+
+    const pick = () => {
+      while (coarse.length) {
+        const i = coarse.shift()
+        if (!claimed.has(i)) {
+          claimed.add(i)
+          return i
+        }
+      }
+      // Después, lo más cercano a donde está mirando, primero en la dirección en la que baja
+      const at = Math.round(positionRef.current)
+      for (let d = 0; d <= LAST; d++) {
+        for (const i of [at + directionRef.current * d, at - directionRef.current * d]) {
+          if (i >= 0 && i <= LAST && !claimed.has(i)) {
+            claimed.add(i)
+            return i
+          }
+        }
+      }
+      return null
+    }
 
     const worker = async () => {
-      while (!cancelled && next < order.length) {
-        const i = order[next++]
+      while (!cancelled) {
+        const i = pick()
+        if (i === null) return
         const img = new Image()
         const ok = await new Promise((resolve) => {
           img.onload = () => resolve(true)
@@ -198,12 +233,12 @@ export default function Film() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const introEnd = toProgress(38)
+  const introEnd = toProgress(76)
   const introOpacity = useTransform(progress, [0, introEnd - 0.06, introEnd], [1, 1, 0])
   const introY = useTransform(progress, [0, introEnd], [0, -40])
   const cueOpacity = useTransform(progress, [0, 0.03], [1, 0])
 
-  const outroStart = toProgress(214)
+  const outroStart = toProgress(428)
   const outroOpacity = useTransform(progress, [outroStart, outroStart + 0.04], [0, 1])
   const outroY = useTransform(progress, [outroStart, outroStart + 0.04], [32, 0])
   const outroPointer = useTransform(outroOpacity, (v) => (v > 0.6 ? 'auto' : 'none'))
